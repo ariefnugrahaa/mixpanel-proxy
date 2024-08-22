@@ -1,12 +1,12 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
-const mixpanelApiUrl = "https://api.mixpanel.com";
+const mixpanelApiUrl = process.env.MIXPANEL_API || "https://api.mixpanel.com";
 
 const proxy = createProxyMiddleware({
   target: mixpanelApiUrl,
   changeOrigin: true,
   pathRewrite: {
-    "^/api/mixpanel": "", // Sesuaikan dengan rute API di Vercel
+    "^/api/mixpanel": "",
   },
   onProxyReq: (proxyReq, req, res) => {
     console.log("Proxying request to:", proxyReq.path);
@@ -33,7 +33,6 @@ export default function handler(req, res) {
   console.log("Received request:", req.method, req.url);
   console.log("Request headers:", req.headers);
 
-  // Handle preflight request
   if (req.method === "OPTIONS") {
     res.setHeader(
       "Access-Control-Allow-Origin",

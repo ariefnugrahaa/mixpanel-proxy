@@ -11,7 +11,7 @@ app.use(
     target: mixpanelApiUrl,
     changeOrigin: true,
     pathRewrite: {
-      "^/api/mixpanel": "", // Sesuaikan dengan rute API di lokal
+      "^/api/mixpanel": "",
     },
     onProxyRes: (proxyRes, req, res) => {
       res.setHeader("Access-Control-Allow-Origin", "*");
