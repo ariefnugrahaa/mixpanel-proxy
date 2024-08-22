@@ -1,6 +1,6 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
-const mixpanelApiUrl = process.env.MIXPANEL_API || "https://api.mixpanel.com";
+const mixpanelApiUrl = "https://api.mixpanel.com";
 
 const proxy = createProxyMiddleware({
   target: mixpanelApiUrl,
