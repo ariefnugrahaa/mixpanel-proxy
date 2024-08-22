@@ -9,7 +9,7 @@ const proxy = createProxyMiddleware({
   target: mixpanelApiUrl,
   changeOrigin: true,
   pathRewrite: {
-    "^/api/mixpanel": "",
+    "^/analytics/track": "",
   },
   onProxyReq: (proxyReq, req, res) => {},
   onProxyRes: (proxyRes, req, res) => {
