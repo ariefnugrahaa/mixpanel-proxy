@@ -30,9 +30,6 @@ const proxy = createProxyMiddleware({
 });
 
 export default function handler(req, res) {
-  console.log("Received request:", req.method, req.url);
-  console.log("Request headers:", req.headers);
-
   if (req.method === "OPTIONS") {
     res.setHeader(
       "Access-Control-Allow-Origin",
@@ -53,7 +50,6 @@ export default function handler(req, res) {
 
   return proxy(req, res, (err) => {
     if (err) {
-      console.error("Proxy error:", err);
       res.status(500).json({ error: "Proxy error", details: err.message });
     }
   });

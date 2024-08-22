@@ -4,17 +4,9 @@
     {
       "src": "server.js",
       "use": "@vercel/node"
-    },
-    {
-      "src": "api/mixpanel.js",
-      "use": "@vercel/node"
     }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/mixpanel.js"
-    },
     {
       "src": "/(.*)",
       "dest": "/server.js"
