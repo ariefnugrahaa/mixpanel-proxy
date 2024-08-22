@@ -1,7 +1,19 @@
-// api/mixpanel.js
-const { createProxyMiddleware } = require("http-proxy-middleware");
+import { createProxyMiddleware } from "http-proxy-middleware";
+import cors from "cors";
 
 const mixpanelApiUrl = process.env.MIXPANEL_API;
+
+const corsOptions = {
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: [
+    "Origin",
+    "X-Requested-With",
+    "Content-Type",
+    "Accept",
+    "Authorization",
+  ],
+};
 
 const proxy = createProxyMiddleware({
   target: mixpanelApiUrl,
@@ -9,33 +21,14 @@ const proxy = createProxyMiddleware({
   pathRewrite: {
     "^/api/mixpanel": "", // Sesuaikan dengan rute API di Vercel
   },
-  onProxyRes: (proxyRes, req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "GET, POST, PUT, DELETE, OPTIONS"
-    );
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-    );
-  },
 });
 
 export default function handler(req, res) {
-  if (req.method === "OPTIONS") {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "GET, POST, PUT, DELETE, OPTIONS"
-    );
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-    );
-    res.status(200).end();
-    return;
-  }
-
-  return proxy(req, res);
+  cors(corsOptions)(req, res, () => {
+    if (req.method === "OPTIONS") {
+      res.status(200).end();
+      return;
+    }
+    return proxy(req, res);
+  });
 }
